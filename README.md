@@ -1,44 +1,73 @@
-# 工程管理システム
+# React + TypeScript + Vite
 
-工事現場の工程をブラウザ上で管理するシングルページアプリケーション。
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 技術スタック
+Currently, two official plugins are available:
 
-- **React 19** + **TypeScript**
-- **Vite 8**
-- データ永続化：`localStorage`
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## セットアップ
+## React Compiler
 
-```bash
-# 依存パッケージのインストール
-npm install
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-# 開発サーバー起動（http://localhost:5173）
-npm run dev
+## Expanding the ESLint configuration
 
-# ビルド
-npm run build
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-# ビルド成果物のプレビュー
-npm run preview
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-# Lint
-npm run lint
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-> **WSL 環境の場合**：nvm で Node.js を管理しています。ターミナル再起動後は `source ~/.bashrc` を実行してください。
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## 機能
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-| 機能 | 説明 |
-|------|------|
-| 工程の追加・編集・削除 | 工程名・工種・期間・担当・進捗率・備考を管理 |
-| ステータス管理 | 未着手 / 進行中 / 完了 / 遅延 の4段階 |
-| 全体進捗表示 | 全工程の進捗率の平均をサマリーカードに表示 |
-| フィルター | 工種・ステータス・キーワードで絞り込み |
-| データ永続化 | ブラウザの localStorage に自動保存 |
-
-## 工種
-
-`基礎工事` / `躯体工事` / `仕上げ工事` / `設備工事` / `外構工事` / `その他`
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
